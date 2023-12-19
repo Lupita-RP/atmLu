@@ -16,16 +16,16 @@
 <body>
 
     <div class="card col-auto">
-        <img src="./images/header.jpg" class="card-img-top" alt="...">
+        <img src="./images/header.jpg" class="card-img-top w-25 align-self-center" alt="...">
+        <!--Login form -->
         <div id="form-login" class="card-body text-center">
-
             <h5 class="card-title">Bienvenid@</h5>
             <div class="form-floating">
                 <select class="form-select" id="select-account" aria-label="Floating label select example" required>
                     <option selected>Selecciona una cuenta:</option>
-                    <option value="1">Sofía</option>
-                    <option value="2">Macarena</option>
-                    <option value="3">Citlali</option>
+                    <option value="0">Sofía</option>
+                    <option value="1">Macarena</option>
+                    <option value="2">Citlali</option>
                 </select>
                 <label for="floatingSelect">Elegir cuenta</label>
             </div>
@@ -39,9 +39,54 @@
                 Tu password es de 4 dígitos numéricos.
             </div>
         </div>
-
-
-
+        <!--Endform Login section -->
+        <!--Start Menu section-->
+        <div id="menu-container" class="card-body text-center">
+            <!--Start Balance container-->
+            <div id="balance-container" class="card">
+                <div class="card-header">
+                    <h5 class="card-title" id="menu-title"></h5>
+                </div>
+                <div class="card-body">
+                    <h3>Tu saldo es: </h3>
+                    <h3><span class="badge bg-secondary" id="balance-amount"></span></h3>
+                </div>
+                <div class="alert alert-info" role="alert" id="hint-balance"></div>
+            </div>
+            <!--End balance container-->
+            <!--Start Enter Amount Container-->
+            <div id="enter-amount-container" class="card justify-content-center">
+                <div class="card-header">
+                    <h5 class="card-title" id="enter-amount-title">Depositar</h5>
+                </div>
+                <div id="form-enter-amount" class="card-body">
+                    <div class="col-sm-3">
+                        <label for="enter-amount-input">Ingresar Cantidad: </label>
+                        <input type="number" class="form-control" id="enter-amount-input" placeholder="$0.00">
+                    </div>
+                    <div class="col-auto">
+                        <button id="enter-amount-btn" class="btn btn-primary mb-3">Depositar</button>
+                    </div>
+                </div>
+            </div>
+            <!--End Enter Amount Container-->
+            <!--Start Withddraw Amount Container-->
+            <div id="withdraw-amount-container" class="card justify-content-center">
+                <div class="card-header">
+                    <h5 class="card-title" id="withdraw-amount-title">Retirar</h5>
+                </div>
+                <div id="form-withdraw-amount" class="card-body">
+                    <div class="col-sm-3">
+                        <label for="withdraw-amount-input">Ingresar Cantidad: </label>
+                        <input type="number" class="form-control" id="withdraw-amount-input" placeholder="$0.00">
+                    </div>
+                    <div class="col-auto">
+                        <button id="withdraw-amount-btn" class="btn btn-primary mb-3">Retirar</button>
+                    </div>
+                </div>
+            </div>
+            <!--End Withdraw Amount Container-->
+        </div>
 </body>
 
 </html>

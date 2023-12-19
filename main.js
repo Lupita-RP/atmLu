@@ -1,50 +1,133 @@
 let cuentas = [
-    { nombre: 'Sofía', saldo: 200, password: 4892 },
-    { nombre: 'Macarena', saldo: 290, password: 4892 },
-    { nombre: 'Citlali', saldo: 67, password: 4892 },
-  ];
-
+  { nombre: "Sofía", saldo: 200, password: 4892 },
+  { nombre: "Macarena", saldo: 290, password: 4892 },
+  { nombre: "Citlali", saldo: 67, password: 4892 },
+];
 
 //get elements in the DOM
-const accountSelected = document.querySelector('#select-account');
-const textPass = document.querySelector('#input-password');  
-const buttonEnter = document.querySelector('#enter-btn');
-const hint = document.querySelector('#hint');
-console.log(hint);
-function valuePassword () {
+const formLogin = document.querySelector("#form-login");
+const accountSelected = document.querySelector("#select-account");
+const textPass = document.querySelector("#input-password");
+const buttonEnter = document.querySelector("#enter-btn");
+const hint = document.querySelector("#hint");
 
-  if(accountSelected.value === 'Selecciona una cuenta:'){
-    accountSelected.classList = 'form-select is-invalid'
-    hint.classList = 'alert alert-warning';
-    hint.textContent = 'Selecciona una cuenta!';  
-    window.localStorage.clear();
-    return;
-  }
-  
-  function restartStyle () {
-    accountSelected.classList = 'form-select';
-    textPass.classList = 'form-control';
-  }
+const menuSection = document.querySelector("#menu-container");
+const menuTitle = document.querySelector("#menu-title");
+const balance = document.querySelector("#balance-amount");
+const hintBalance = document.querySelector('#hint-balance');
 
-  restartStyle();
-  const accountNumber = parseInt(accountSelected.value);
-  const inputPass = parseInt(textPass.value);
-  const valuePassAccount = cuentas[accountNumber].password;
-  console.log(accountNumber);
-  console.log(inputPass);
-  console.log(valuePassAccount);
-  console.log(inputPass===valuePassAccount);
+const enterAmountContainer = document.querySelector("#enter-amount-container");
+const enterAmountInput = document.querySelector("#enter-amount-input");
+const enterAmountBtn = document.querySelector("#enter-amount-btn");
 
-  if(inputPass === valuePassAccount){
-    console.log(`Bienvenid@ ${cuentas[accountNumber].nombre}`);
-    hint.textContent = 'Bienvenid@'; 
-    hint.classList = 'alert alert-success';
-  } else {
-    textPass.classList = 'form-control is-invalid'
-    hint.classList = 'alert alert-danger';
-    hint.textContent ='🔒Password incorrecto!';  
-  }
-  
+const withdrawAmountContainer = document.querySelector("#withdraw-amount-container");
+const withdrawAmountInput = document.querySelector("#withdraw-amount-input");
+const withdrawAmountBtn = document.querySelector("#withdraw-amount-btn");
+
+let accountNumber;
+let limiteMayor = 990;
+let limiteMinor = 10;
+
+//Hiden section
+menuSection.style.display = "none";
+hintBalance.style.display = 'none';
+
+
+//function for restart styles for login form
+function restartStyleLogin() {
+  accountSelected.classList = "form-select";
+  textPass.classList = "form-control";
 }
 
-buttonEnter.addEventListener('click', valuePassword);
+//funcion for login
+function valuePassword() {
+  if (accountSelected.value === "Selecciona una cuenta:") {
+    accountSelected.classList = "form-select is-invalid";
+    hint.classList = "alert alert-warning";
+    hint.textContent = "Selecciona una cuenta!";
+    return;
+  }
+
+  restartStyleLogin();
+  accountNumber = parseInt(accountSelected.value);
+  const inputPass = parseInt(textPass.value);
+  const valuePassAccount = cuentas[accountNumber].password;
+
+  if (inputPass === valuePassAccount) {
+    hint.textContent = "Bienvenid@";
+    hint.classList = "alert alert-success";
+    formLogin.style.display = "none";
+    menuSection.style.display = "";
+    menuTitle.textContent = `Bienvenid@ ${cuentas[accountNumber].nombre}`;
+    balance.textContent = `$ ${cuentas[accountNumber].saldo}`;
+  } else {
+    textPass.classList = "form-control is-invalid";
+    hint.classList = "alert alert-danger";
+    hint.textContent = "🔒Password incorrecto!";
+  }
+}
+
+//Enter Login Event
+buttonEnter.addEventListener("click", valuePassword);
+
+//Update balance
+function updateBalance(amountNew) {
+  console.log("Actualiza saldo");
+  cuentas[accountNumber].saldo = amountNew;
+  balance.textContent = `$ ${amountNew}`;
+  if(amountNew === limiteMayor) {
+    console.log('entra');
+    enterAmountContainer.style.display = "none";
+    hintBalance.style.display = '';
+    hintBalance.textContent =
+      `⛔ No puede ingresar más de $${limiteMayor} a su cuenta estás al límite.`;
+    hintBalance.classList = "alert alert-warning";
+    return;
+  }
+  if (amount === limiteMinor) {
+    console.log('entra');
+    withdrawAmountContainer.style.display = "none";
+    hintBalance.style.display = '';
+    hintBalance.textContent =
+    `⛔ No puede tener menos de $${limiteMinor}, su cuenta estás al límite.`;
+    hintBalance.classList = "alert alert-warning";
+    return;
+  } 
+}
+
+function enterAmountValidate() {
+  let amount = cuentas[accountNumber].saldo;
+  let amountEnter = parseInt(enterAmountInput.value);
+  amount = amount + amountEnter;
+  if (amount <= limiteMayor) {
+      updateBalance(amount);
+      hintBalance.style.display = 'none';
+    } else {
+      enterAmountInput.textContent = 0;
+      hintBalance.style.display = '';
+      hintBalance.textContent =
+      `⛔ No puede ingresar más de $${limiteMayor} a su cuenta estás al límite...`;
+      hintBalance.classList = "alert alert-warning";
+    }
+  }   
+
+enterAmountBtn.addEventListener("click", enterAmountValidate);
+
+function withdrawAmoutValidate() {
+  let amount = cuentas[accountNumber].saldo;
+  let amountWithdraw = parseInt(withdrawAmountInput.value);
+  amount = amount - amountWithdraw;
+  if (amount >= limiteMinor) {
+      updateBalance(amount);
+      hintBalance.style.display = 'none';
+    } else {
+      withdrawAmountInputAmountInput.textContent = 0;
+      hintBalance.style.display = '';
+      hintBalance.textContent =
+      `⛔ No puede tener menos de $${limiteMinor}, su cuenta estás al límite...`;
+      hintBalance.classList = "alert alert-warning";
+    }
+  } 
+
+
+withdrawAmountBtn.addEventListener('click', withdrawAmoutValidate)
